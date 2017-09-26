@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "WEBPACK_CONFIG=./webpack.base.config nodemon ./bin/www",
+    "start": "nodemon ./bin/www",
     "build": "webpack --progress",
     "build:prod": "webpack -p --progress"
   },

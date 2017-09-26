@@ -11,7 +11,7 @@ module.exports = {
   target: 'web',
   output: {
     path: __dirname + "/dist",
-    filename: "bundle.js"
+    filename: "js/bundle.js"
   },
   module : {
     rules : [
