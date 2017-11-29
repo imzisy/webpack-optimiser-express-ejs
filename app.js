@@ -6,7 +6,17 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var ejs = require('ejs');
+
 var app = express();
+
+var i18n = require('i18n');
+i18n.configure({
+  locales: ['ms'],
+  defaultLocale: 'ms',
+  directory: __dirname+'/locales'
+});
+app.use(i18n.init);
+
 // var webpack = require('webpack');
 // var webpackConfig = require('./webpack.base.config');
 // var compiler = webpack(webpackConfig);
@@ -18,15 +28,12 @@ app.set('view engine', 'html');
 app.engine('html', ejs.renderFile);
 
 
-
-// uncomment after placing your favicon in /public
-// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/static', express.static(path.join(__dirname, 'dist')))
+app.use('/static', express.static(path.join(__dirname, 'dist/static')))
 
 
 
@@ -42,6 +49,7 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
+  console.log(err);
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

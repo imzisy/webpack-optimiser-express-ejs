@@ -3,15 +3,17 @@ const path = require('path');
 // const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
-  devtool: 'cheap-module-eval-source-map',
   context: __dirname,
-  entry: "./src/js/app.js",
+  entry: {
+    main: "./src/js/app.js"
+  },
   target: 'web',
   output: {
     path: __dirname + "/dist",
-    filename: "js/bundle.js"
+    filename: 'static/js/[name].bundle.js',
   },
   module : {
     rules : [
@@ -23,29 +25,30 @@ module.exports = {
             ]
         },
         {
-          test: /\.js$/,
-          exclude: /(node_modules|bower_components)/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              presets: ['env'],
-              plugins: ['transform-runtime']  
-            }
+          test: /\.(js|jsx)$/,
+          exclude: /node_modules/, 
+          loader: "babel-loader",
+          query: {
+              presets: ["react", "es2015", "stage-2"]
           }
         },
+        
         {
           test: /\.(html)$/,
           use: ['html-loader']
         }
     ]
   },
-  devtool: '#source-map',
   plugins: [
     new CleanWebpackPlugin('dist'),
     new HtmlWebpackPlugin({
-    template : "src/index.html"
+    filename: 'index.html',
+    template: 'src/index.html',
+    chunks: ['main']
   }),
-  new webpack.HotModuleReplacementPlugin(),
+  // new UglifyJSPlugin({
+  //   sourceMap: true
+  // }),
   new webpack.NoEmitOnErrorsPlugin(),
 ]
 };
